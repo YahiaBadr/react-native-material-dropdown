@@ -189,9 +189,11 @@ export default class Dropdown extends PureComponent {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.value !== this.props.value) {
-      this.setState({ value:this.props.value });
+      this.txRef.current.value = this.props.value;
+    } else if (prevState.value !== this.state.value) {
+      this.txRef.current.value = this.state.value;
     }
   }
 
@@ -475,6 +477,8 @@ export default class Dropdown extends PureComponent {
     return `${index}-${valueExtractor(item, index)}`;
   }
 
+  txRef = React.createRef();
+
   renderBase(props) {
     let { value } = this.state;
     let {
@@ -506,6 +510,7 @@ export default class Dropdown extends PureComponent {
 
     return (
       <TextField
+        ref={this.txRef}
         label=''
         labelHeight={dropdownOffset.top - Platform.select({ ios: 1, android: 2 })}
 
@@ -514,7 +519,7 @@ export default class Dropdown extends PureComponent {
         value={title}
         editable={false}
         onChangeText={undefined}
-        renderAccessory={renderAccessory}
+        renderRightAccessory={renderAccessory}
       />
     );
   }
