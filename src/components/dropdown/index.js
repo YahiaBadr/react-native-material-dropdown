@@ -11,6 +11,7 @@ import {
   Platform,
   ViewPropTypes,
   I18nManager,
+  Keyboard
 } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { TextField } from 'react-native-material-textfield';
@@ -188,9 +189,9 @@ export default class Dropdown extends PureComponent {
     };
   }
 
-  componentWillReceiveProps({ value }) {
-    if (value !== this.props.value) {
-      this.setState({ value });
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value:this.props.value });
     }
   }
 
@@ -219,7 +220,7 @@ export default class Dropdown extends PureComponent {
     if (disabled) {
       return;
     }
-
+    Keyboard.dismiss();
     let itemCount = data.length;
     let timestamp = Date.now();
 
